@@ -1,0 +1,19 @@
+name: Auto Sync Upstream Rules
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 每天北京时间上午 10 点自动同步
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync upstream
+        run: |
+          gh repo sync ${{ github.repository }} -b master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
